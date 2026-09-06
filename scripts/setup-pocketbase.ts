@@ -1,3 +1,4 @@
+import "dotenv/config";
 import PocketBase from "pocketbase";
 
 const url = process.env.POCKETBASE_URL;
@@ -9,6 +10,8 @@ if (!url || !email || !password) {
 }
 
 const pb = new PocketBase(url);
+
+const main = async () => {
 await pb.collection("_superusers").authWithPassword(email, password);
 
 const collections = [
@@ -85,3 +88,9 @@ for (const definition of collections) {
     console.log(`Created PocketBase collection: ${definition.name}`);
   }
 }
+};
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
