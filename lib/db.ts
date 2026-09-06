@@ -72,7 +72,9 @@ const mapMenuItem = (record: RecordModel): MenuItem => ({
   description: record.description ?? null,
   category: record.category,
   image: record.image,
-  pricePesewas: record.pricePesewas ?? null,
+  pricePesewas: typeof record.pricePesewas === "number" && record.pricePesewas > 0
+    ? record.pricePesewas
+    : null,
   variants: Array.isArray(record.variants) ? record.variants : [],
   available: record.available ?? true,
   featured: record.featured ?? false,
@@ -130,8 +132,11 @@ const menuItem = {
     await ensureAuthenticated();
     const filters: string[] = [];
     if (where?.available !== undefined) filters.push(`available = ${where.available}`);
-    if (where?.id?.in?.length) filters.push(`(${where.id.in.map((id: string) => `id = "${escape(id)}"`).join(" || ")})`);
-    const sort = Array.isArray(orderBy) ? orderBy.flatMap((entry) => Object.entries(entry).map(([key, direction]) => `${direction === "desc" ? "-" : "+"}${key}`)).join(",") : "-created";
+    if (where?.id?.in?.length) {
+      const idFilters = where.id.in.map((id: string) => `id = "${escape(id)}"`);
+      filters.push(idFilters.length === 1 ? idFilters[0] : `(${idFilters.join(" || ")})`);
+    }
+    const sort = Array.isArray(orderBy) ? orderBy.flatMap((entry) => Object.entries(entry).map(([key, direction]) => `${direction === "desc" ? "-" : "+"}${key}`)).join(",") : "+sortOrder,+name";
     const result = await client.collection("menu_items").getFullList({ filter: filters.join(" && "), sort });
     return result.slice(0, take ?? result.length).map(mapMenuItem);
   },
