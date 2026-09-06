@@ -1,0 +1,31 @@
+{
+  "name": "titanic-city-ventures",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "start:render": "prisma migrate deploy && npm run seed && next start -H 0.0.0.0 -p ${PORT:-10000}",
+    "seed": "tsx prisma/seed.ts",
+    "db:generate": "prisma generate",
+    "db:migrate:deploy": "prisma migrate deploy"
+  },
+  "dependencies": {
+    "@prisma/client": "6.16.1",
+    "next": "15.5.25",
+    "prisma": "6.16.1",
+    "react": "19.1.8",
+    "react-dom": "19.1.8",
+    "tsx": "4.20.5"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "@types/react": "19.1.6",
+    "@types/react-dom": "19.1.5",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
