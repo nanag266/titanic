@@ -129,7 +129,11 @@ export const getDeliveryQuote = async (
   }
 
   const googleMetrics = await routeMetrics(config, destination);
-  if (googleMetrics === null && process.env.NODE_ENV === "production") {
+  if (
+    googleMetrics === null &&
+    (config.restaurantLat === null || config.restaurantLng === null) &&
+    process.env.NODE_ENV === "production"
+  ) {
     return {
       configured: false,
       eligible: false,
