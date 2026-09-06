@@ -88,7 +88,7 @@ const defaults = {
   restaurantPlaceId: "ChIJE7EZ2K-H3w8R8efP8YXbK-w", restaurantLat: null, restaurantLng: null,
   deliveryBaseFeePesewas: 400, deliveryPerKmPesewas: 150, deliveryPerMinutePesewas: 10,
   deliveryMinimumFeePesewas: 1000, deliveryTrafficWeight: 0.6, deliveryTrafficCap: 1.25,
-  deliverySurgeMultiplier: 1, deliveryRoundToPesewas: 100, maxDeliveryKm: 100,
+  deliverySurgeMultiplier: 1, deliveryRoundToPesewas: 100, maxDeliveryKm: null,
   serviceMinLat: 5.45, serviceMaxLat: 5.75, serviceMinLng: -0.35, serviceMaxLng: -0.05,
   ordersEnabled: true
 };
