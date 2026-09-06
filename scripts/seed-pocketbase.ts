@@ -21,9 +21,9 @@ const main = async () => {
 await pb.collection("_superusers").authWithPassword(email, password);
 try {
   const config = await pb.collection("site_config").getFirstListItem("id != ''");
-  if (config.maxDeliveryKm === 25) await pb.collection("site_config").update(config.id, { maxDeliveryKm: 50 });
+  if (config.maxDeliveryKm === 25 || config.maxDeliveryKm === 50) await pb.collection("site_config").update(config.id, { maxDeliveryKm: 100 });
 } catch {
-  await pb.collection("site_config").create({ restaurantName: "Titanic City Ventures", tagline: "A Place to Be!", heroTitle: "Accra's table, turned all the way up.", heroSubtitle: "Bold Ghanaian favourites, grills, rice dishes and more — ordered online and delivered across our Accra service area.", phone: "+233 54 324 5511", whatsapp: "", address: "Titanic Beach, Tema, Ghana", restaurantPlaceId: "ChIJE7EZ2K-H3w8R8efP8YXbK-w", deliveryBaseFeePesewas: 400, deliveryPerKmPesewas: 150, deliveryPerMinutePesewas: 10, deliveryMinimumFeePesewas: 1000, deliveryTrafficWeight: 0.6, deliveryTrafficCap: 1.25, deliverySurgeMultiplier: 1, deliveryRoundToPesewas: 100, maxDeliveryKm: 50, serviceMinLat: 5.45, serviceMaxLat: 5.75, serviceMinLng: -0.35, serviceMaxLng: -0.05, ordersEnabled: true });
+  await pb.collection("site_config").create({ restaurantName: "Titanic City Ventures", tagline: "A Place to Be!", heroTitle: "Accra's table, turned all the way up.", heroSubtitle: "Bold Ghanaian favourites, grills, rice dishes and more — ordered online and delivered across our Accra service area.", phone: "+233 54 324 5511", whatsapp: "", address: "Titanic Beach, Tema, Ghana", restaurantPlaceId: "ChIJE7EZ2K-H3w8R8efP8YXbK-w", deliveryBaseFeePesewas: 400, deliveryPerKmPesewas: 150, deliveryPerMinutePesewas: 10, deliveryMinimumFeePesewas: 1000, deliveryTrafficWeight: 0.6, deliveryTrafficCap: 1.25, deliverySurgeMultiplier: 1, deliveryRoundToPesewas: 100, maxDeliveryKm: 100, serviceMinLat: 5.45, serviceMaxLat: 5.75, serviceMinLng: -0.35, serviceMaxLng: -0.05, ordersEnabled: true });
 }
 
 for (const [slug, name, category, image, sortOrder, featured = false, itemVariants = []] of items) {
