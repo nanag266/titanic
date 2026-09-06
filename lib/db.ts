@@ -104,6 +104,7 @@ const findConfig = async () => {
 };
 const upsertConfig = async (data: Record<string, unknown> = {}) => {
   const current = await findConfig();
+  if (current && Object.keys(data).length === 0) return mapConfig(current);
   if (current) return mapConfig(await client.collection("site_config").update(current.id, data));
   return mapConfig(await client.collection("site_config").create({ ...defaults, ...data }));
 };
@@ -129,7 +130,10 @@ const menuItem = {
   delete: async ({ where }: { where: { id: string } }) => { await ensureAuthenticated(); await client.collection("menu_items").delete(where.id); }
 };
 
-const siteConfig = { upsert: async ({ update, create }: { where: { id: number }; update: Record<string, unknown>; create: Record<string, unknown> }) => upsertConfig({ ...create, ...update }) };
+const siteConfig = {
+  upsert: async ({ update }: { where: { id: number }; update: Record<string, unknown>; create: Record<string, unknown> }) =>
+    upsertConfig(update)
+};
 const mapOrder = (record: RecordModel): Order => ({ ...record, ...dates(record) });
 const order = {
   findMany: async ({ take }: { orderBy?: any; take?: number } = {}) => { await ensureAuthenticated(); return (await client.collection("orders").getList(1, take ?? 250, { sort: "-created" })).items.map(mapOrder); },
