@@ -1,4 +1,3 @@
-import type { Prisma } from "@prisma/client";
 import { isAdminRequest } from "@/lib/auth";
 import { db } from "@/lib/db";
 
@@ -68,7 +67,7 @@ export const POST = async (request: Request) => {
     available: typeof body.available === "boolean" ? body.available : true,
     featured: typeof body.featured === "boolean" ? body.featured : false,
     sortOrder: Number.isFinite(Number(body.sortOrder)) ? Math.round(Number(body.sortOrder)) : 0
-  } satisfies Prisma.MenuItemCreateInput;
+  };
 
   const item = await db.menuItem.create({ data });
   return Response.json({ item }, { status: 201 });

@@ -8,7 +8,7 @@ export const GET = async (_request: Request, context: { params: Promise<{ id: st
   const asset = await db.asset.findUnique({ where: { id } });
   if (!asset) return new Response("Not found", { status: 404 });
 
-  return new Response(asset.data, {
+  return new Response(Buffer.from(asset.data, "base64"), {
     headers: {
       "Content-Type": asset.contentType,
       "Content-Disposition": `inline; filename="${asset.fileName.replace(/["\\]/g, "")}"`,

@@ -15,8 +15,8 @@ A full-stack restaurant storefront built around the supplied Titanic City Ventur
 - Paystack verification endpoint and signed webhook handling.
 - Server recalculates menu prices and delivery fee at checkout; client totals are never trusted.
 - Admin login, menu CRUD, cedi pricing, item options/sizes, availability, featured items, website settings, delivery settings and order-status management.
-- PostgreSQL schema and idempotent menu seed.
-- Render Blueprint (`render.yaml`) for the Node web service and Render Postgres.
+- PocketBase collections and an idempotent menu seed.
+- Render Blueprint (`render.yaml`) for the Node web service and PocketBase.
 
 ## Important launch behavior
 
@@ -47,12 +47,14 @@ Option groups are already created for the PDF items that show a choice or size, 
 
 ## Local setup
 
-Requirements: Node 20+ and PostgreSQL.
+Requirements: Node 20+ and a PocketBase server with superuser credentials.
+
+Set `POCKETBASE_URL`, `POCKETBASE_ADMIN_EMAIL` and `POCKETBASE_ADMIN_PASSWORD` in `.env`. The setup command creates the required PocketBase collections; the seed command then creates the menu and default site settings.
 
 ```bash
 cp .env.example .env
 npm install
-npx prisma migrate deploy
+npm run db:setup
 npm run seed
 npm run dev
 ```
@@ -66,8 +68,11 @@ Open:
 
 1. Push this project to a GitHub repository.
 2. In Render, choose **New → Blueprint** and connect the repository.
-3. Render reads `render.yaml`, creates the web service and Postgres database, and asks for the secret environment variables.
+3. Render reads `render.yaml` and asks for the PocketBase URL and secret environment variables.
 4. Set:
+   - `POCKETBASE_URL`
+   - `POCKETBASE_ADMIN_EMAIL`
+   - `POCKETBASE_ADMIN_PASSWORD`
    - `ADMIN_EMAIL`
    - `ADMIN_PASSWORD`
    - `PAYSTACK_SECRET_KEY`
@@ -83,10 +88,6 @@ Open:
 7. In Paystack Dashboard, set the webhook URL to:
    - `https://YOUR-DOMAIN/api/paystack/webhook`
 8. Test end-to-end using Paystack **test** keys before changing `PAYSTACK_SECRET_KEY` to a live key.
-
-### Render free database warning
-
-Render currently offers a Free Postgres option for testing, but its Free Postgres database expires after 30 days and has no backups. Before taking real customer orders, upgrade the database to a production-suitable Render Postgres plan.
 
 ## Google Maps setup
 
@@ -107,7 +108,7 @@ The browser key is public by design; domain/API restrictions are essential. The 
 ## Paystack flow
 
 1. Customer checks out.
-2. Server reloads each menu item from PostgreSQL and recalculates the subtotal.
+2. Server reloads each menu item from PocketBase and recalculates the subtotal.
 3. Server recalculates delivery eligibility, route distance and fee.
 4. Server creates a pending order.
 5. Server initializes the Paystack transaction in pesewas.

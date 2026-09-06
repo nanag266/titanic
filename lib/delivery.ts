@@ -1,4 +1,4 @@
-import type { SiteConfig } from "@prisma/client";
+import type { SiteConfig } from "@/lib/db";
 
 export type DeliveryPoint = { lat: number; lng: number };
 

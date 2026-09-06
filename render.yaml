@@ -9,10 +9,12 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 22.16.0
-      - key: DATABASE_URL
-        fromDatabase:
-          name: titanic-city-db
-          property: connectionString
+      - key: POCKETBASE_URL
+        sync: false
+      - key: POCKETBASE_ADMIN_EMAIL
+        sync: false
+      - key: POCKETBASE_ADMIN_PASSWORD
+        sync: false
       - key: SESSION_SECRET
         generateValue: true
       - key: ADMIN_EMAIL
@@ -26,8 +28,6 @@ services:
       - key: GOOGLE_MAPS_SERVER_KEY
         sync: false
 
-databases:
-  - name: titanic-city-db
-    plan: free
-    databaseName: titanic_city
-    user: titanic_city_user
+# PocketBase is hosted separately and configured through the variables above.
+# The PocketBase collections are created by the Render start command.
+

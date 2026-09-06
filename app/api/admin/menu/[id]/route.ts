@@ -1,4 +1,3 @@
-import type { Prisma } from "@prisma/client";
 import { isAdminRequest } from "@/lib/auth";
 import { db } from "@/lib/db";
 
@@ -33,7 +32,7 @@ export const PUT = async (request: Request, context: { params: Promise<{ id: str
   const body = await request.json().catch(() => null) as Record<string, unknown> | null;
   if (!body) return Response.json({ error: "Invalid request." }, { status: 400 });
 
-  const data: Prisma.MenuItemUpdateInput = {};
+  const data: Record<string, unknown> = {};
   if (typeof body.name === "string" && body.name.trim()) data.name = body.name.trim().slice(0, 120);
   if (typeof body.category === "string" && body.category.trim()) data.category = body.category.trim().slice(0, 80);
   if (typeof body.image === "string" && body.image.trim()) data.image = body.image.trim().slice(0, 500);

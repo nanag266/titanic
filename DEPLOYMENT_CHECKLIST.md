@@ -13,7 +13,7 @@
 - [ ] Test cart totals and delivery totals.
 - [ ] Complete a Paystack test payment and confirm order changes to PAID.
 - [ ] Test Admin status flow through DELIVERED.
-- [ ] Upgrade Render Postgres before production if currently using the Free database.
+- [ ] Confirm the PocketBase server has production backups and persistent storage.
 - [ ] Restrict API keys to required domains/APIs.
 - [ ] Switch Paystack to live key only after all test checks pass.
 

@@ -1,4 +1,3 @@
-import type { Prisma } from "@prisma/client";
 import { isAdminRequest } from "@/lib/auth";
 import { db } from "@/lib/db";
 
@@ -52,12 +51,12 @@ export const PUT = async (request: Request) => {
     serviceMinLng: finite(body.serviceMinLng) ?? -0.35,
     serviceMaxLng: finite(body.serviceMaxLng) ?? -0.05,
     ordersEnabled: typeof body.ordersEnabled === "boolean" ? body.ordersEnabled : undefined
-  } satisfies Prisma.SiteConfigUpdateInput;
+  };
 
   const config = await db.siteConfig.upsert({
     where: { id: 1 },
     update: data,
-    create: { id: 1, ...data } as Prisma.SiteConfigCreateInput
+    create: { id: 1, ...data }
   });
   return Response.json({ config });
 };
