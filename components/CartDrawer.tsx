@@ -14,6 +14,16 @@ type Props = {
   removeItem: (key: string) => void;
 };
 
+const readResponse = async (response: Response) => {
+  const text = await response.text();
+  if (!text) return {} as { error?: string; authorizationUrl?: string; quote?: DeliveryQuoteDTO };
+  try {
+    return JSON.parse(text) as { error?: string; authorizationUrl?: string; quote?: DeliveryQuoteDTO };
+  } catch {
+    return { error: `Payment request failed (${response.status}).` };
+  }
+};
+
 export const CartDrawer = ({ open, onClose, cart, config, setQuantity, removeItem }: Props) => {
   const [location, setLocation] = useState<SelectedLocation | null>(null);
   const [quote, setQuote] = useState<DeliveryQuoteDTO | null>(null);
@@ -39,9 +49,9 @@ export const CartDrawer = ({ open, onClose, cart, config, setQuantity, removeIte
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ lat: selected.lat, lng: selected.lng })
       });
-      const payload = await response.json();
+      const payload = await readResponse(response);
       if (!response.ok) throw new Error(payload.error || "Unable to calculate delivery.");
-      setQuote(payload.quote);
+      setQuote(payload.quote ?? null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to calculate delivery.");
     } finally {
@@ -74,8 +84,9 @@ export const CartDrawer = ({ open, onClose, cart, config, setQuantity, removeIte
           }))
         })
       });
-      const payload = await response.json();
+      const payload = await readResponse(response);
       if (!response.ok) throw new Error(payload.error || "Unable to start payment.");
+      if (!payload.authorizationUrl) throw new Error("Paystack did not return a payment link.");
       window.location.href = payload.authorizationUrl;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to start payment.");

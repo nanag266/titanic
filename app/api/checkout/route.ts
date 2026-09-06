@@ -22,7 +22,7 @@ const asString = (value: unknown, max = 200) =>
 
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-export const POST = async (request: Request) => {
+const checkout = async (request: Request) => {
   const body = (await request.json().catch(() => null)) as CheckoutPayload | null;
   if (!body) return Response.json({ error: "Invalid checkout request." }, { status: 400 });
 
@@ -164,6 +164,18 @@ export const POST = async (request: Request) => {
     return Response.json(
       { error: error instanceof Error ? error.message : "Unable to start payment." },
       { status: 502 }
+    );
+  }
+};
+
+export const POST = async (request: Request) => {
+  try {
+    return await checkout(request);
+  } catch (error) {
+    console.error("Checkout failed", error);
+    return Response.json(
+      { error: error instanceof Error ? error.message : "Unable to start payment." },
+      { status: 500 }
     );
   }
 };
