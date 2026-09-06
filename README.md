@@ -148,7 +148,6 @@ The code is ready for these values, but they were not in the supplied PDF:
 
 The original menu imagery is bundled in `/public/menu`, so it survives redeploys. Admin currently accepts an image path or image URL when changing/adding items. For frequent image uploads from nontechnical staff, add Cloudinary or another object-storage provider rather than relying on a Render web-service filesystem.
 
-
 ## September 2026 location + delivery update
 
 - Dispatch origin: **Titanic City Ventures, Titanic Beach, Tema, Ghana**.
@@ -157,4 +156,4 @@ The original menu imagery is bundled in `/public/menu`, so it survives redeploys
 - Delivery remains restricted to the configured Accra service bounds.
 - The delivery engine now uses a **Bolt-style dynamic model**: base fee + route distance + traffic-aware route time, then a traffic multiplier and an admin-controlled demand/weather multiplier.
 - Bolt Ghana publicly describes dynamic delivery pricing as taking route distance/time, traffic, weather, courier availability and other market factors into account, but it does not publish the exact coefficients or expose a public fare-calculation API. The defaults in this project are therefore calibrated starting values, not a claim of an identical Bolt fare.
-- Default starting values are GH₵4.00 base + GH₵1.50/km + GH₵0.10/route minute, GH₵10 minimum, traffic sensitivity `0.60`, traffic cap `1.25x`, and demand/weather multiplier `1.00x`. All can be changed from `/admin`.
+- Default starting values are GH₵4.00 base + GH₵1.50/km + GH₵0.10/route minute, GH₵10 minimum, a 50 km maximum delivery distance, traffic sensitivity `0.60`, traffic cap `1.25x`, and demand/weather multiplier `1.00x`. All can be changed from `/admin`.
