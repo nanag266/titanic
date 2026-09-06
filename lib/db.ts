@@ -85,7 +85,7 @@ const defaults = {
   heroTitle: "Accra's table, turned all the way up.",
   heroSubtitle: "Bold Ghanaian favourites, grills, rice dishes and more — ordered online and delivered across our Accra service area.",
   phone: "+233 54 324 5511", whatsapp: "", address: "Titanic Beach, Tema, Ghana",
-  restaurantPlaceId: "ChIJE7EZ2K-H3w8R8efP8YXbK-w", restaurantLat: null, restaurantLng: null,
+  restaurantPlaceId: "ChIJE7EZ2K-H3w8R8efP8YXbK-w", restaurantLat: 5.6101841, restaurantLng: -0.0493696,
   deliveryBaseFeePesewas: 400, deliveryPerKmPesewas: 150, deliveryPerMinutePesewas: 10,
   deliveryMinimumFeePesewas: 1000, deliveryTrafficWeight: 0.6, deliveryTrafficCap: 1.25,
   deliverySurgeMultiplier: 1, deliveryRoundToPesewas: 100, maxDeliveryKm: null,
@@ -95,10 +95,18 @@ const defaults = {
 
 const mapConfig = (record: RecordModel): SiteConfig => {
   const { id: _id, created: _created, updated: _updated, ...fields } = record;
+  const restaurantLat = typeof fields.restaurantLat === "number" && fields.restaurantLat !== 0
+    ? fields.restaurantLat
+    : null;
+  const restaurantLng = typeof fields.restaurantLng === "number" && fields.restaurantLng !== 0
+    ? fields.restaurantLng
+    : null;
   return {
     id: 1,
     ...defaults,
     ...fields,
+    restaurantLat,
+    restaurantLng,
     maxDeliveryKm: typeof fields.maxDeliveryKm === "number" && fields.maxDeliveryKm > 0
       ? fields.maxDeliveryKm
       : null,

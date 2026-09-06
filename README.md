@@ -152,7 +152,7 @@ The original menu imagery is bundled in `/public/menu`, so it survives redeploys
 
 - Dispatch origin: **Titanic City Ventures, Titanic Beach, Tema, Ghana**.
 - Google Maps Place ID: `ChIJE7EZ2K-H3w8R8efP8YXbK-w`. The Routes API uses the Place ID first because Google recommends Place IDs for routing accuracy.
-- The Google Place ID is the canonical dispatch origin. Optional fallback latitude/longitude can still be added from `/admin` for local development.
+- The verified dispatch coordinates are `5.6101841, -0.0493696`. The delivery engine prefers these coordinates for routing and keeps the Google Place ID as a fallback.
 - Delivery remains restricted to the configured Accra service bounds.
 - The delivery engine now uses a **Bolt-style dynamic model**: base fee + route distance + traffic-aware route time, then a traffic multiplier and an admin-controlled demand/weather multiplier.
 - Bolt Ghana publicly describes dynamic delivery pricing as taking route distance/time, traffic, weather, courier availability and other market factors into account, but it does not publish the exact coefficients or expose a public fare-calculation API. The defaults in this project are therefore calibrated starting values, not a claim of an identical Bolt fare.

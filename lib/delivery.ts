@@ -52,11 +52,11 @@ const routeMetrics = async (config: SiteConfig, destination: DeliveryPoint): Pro
   const apiKey = process.env.GOOGLE_MAPS_SERVER_KEY;
   if (!apiKey) return null;
 
-  const origin = config.restaurantPlaceId.trim()
-    ? { placeId: config.restaurantPlaceId.trim() }
-    : config.restaurantLat !== null && config.restaurantLng !== null
+  const origin = config.restaurantLat !== null && config.restaurantLng !== null
       ? { location: { latLng: { latitude: config.restaurantLat, longitude: config.restaurantLng } } }
-      : null;
+      : config.restaurantPlaceId.trim()
+        ? { placeId: config.restaurantPlaceId.trim() }
+        : null;
 
   if (!origin) return null;
 
