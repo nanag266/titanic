@@ -95,7 +95,15 @@ const defaults = {
 
 const mapConfig = (record: RecordModel): SiteConfig => {
   const { id: _id, created: _created, updated: _updated, ...fields } = record;
-  return { id: 1, ...defaults, ...fields, ...dates(record) } as SiteConfig;
+  return {
+    id: 1,
+    ...defaults,
+    ...fields,
+    maxDeliveryKm: typeof fields.maxDeliveryKm === "number" && fields.maxDeliveryKm > 0
+      ? fields.maxDeliveryKm
+      : null,
+    ...dates(record)
+  } as SiteConfig;
 };
 const findConfig = async () => {
   await ensureAuthenticated();
